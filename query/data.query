@@ -1,0 +1,17 @@
+PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
+PREFIX dbcv:   <http://dataid.dbpedia.org/ns/cv#>
+PREFIX dct:    <http://purl.org/dc/terms/>
+PREFIX dcat:   <http://www.w3.org/ns/dcat#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?file WHERE {
+	GRAPH ?g {
+		?dataset dcat:distribution ?distribution ;
+						 dataid:group <https://databus.dbpedia.org/dbpedia/generic> .
+		
+		?distribution dataid:file ?file ;
+						 			dct:hasVersion "DUMP_VERSION"^^xsd:string ;
+								  dbcv:lang "en"^^xsd:string ;
+									dataid:formatExtension "ttl"^^xsd:string .
+	}
+}

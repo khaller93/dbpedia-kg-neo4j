@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  neo4j:
+    container_name: neo4j_db
+    image: neo4j:4.4.12-community
+    entrypoint: run-neo4j
+    command: ["neo4j"]
+    environment:
+      - INIT_AUTH=neo4j/test
+      - NEO4J_dbms.unmanaged_extension_classes=n10s.endpoint=/rdf
+    ports:
+      - "127.0.0.1:7687:7687"
+      - "127.0.0.1:7474:7474"
+    volumes:
+      - "db:/data"
+      - "neo4j-plugins:/var/lib/neo4j/plugins"
+      - "./config:/conf:ro"
+      - "./data/dump:/dump:ro"
+      - "./data/ontology:/ontology:ro"
+      - "./run-neo4j.sh:/usr/bin/run-neo4j:ro"
+
+volumes:
+  db: { }
+  neo4j-plugins: {}

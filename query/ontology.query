@@ -1,0 +1,22 @@
+PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
+PREFIX dbcv:   <http://dataid.dbpedia.org/ns/cv#>
+PREFIX dct:    <http://purl.org/dc/terms/>
+PREFIX dcat:   <http://www.w3.org/ns/dcat#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?file WHERE {
+	GRAPH ?g {
+		?dataset dcat:distribution ?distribution ;
+             dataid:artifact <https://databus.dbpedia.org/ontologies/dbpedia.org/ontology--DEV> .
+
+    ?distribution dataid:file ?file ;
+                  dct:hasVersion ?version ;
+                  dbcv:type "parsed"^^xsd:string ;
+                  dataid:formatExtension "nt"^^xsd:string .
+
+    BIND(replace(?version, "-[0-9]+$", "") AS ?raw_version) .
+    FILTER (str(?raw_version) <= "DUMP_VERSION") .
+	}
+}
+ORDER BY DESC(?version)
+LIMIT 1

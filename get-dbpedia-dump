@@ -1,0 +1,48 @@
+#!/bin/sh
+if [ -z "$1" ] ; then
+  VERSION=$(curl -H "Accept: text/csv" --data-urlencode "query=$(cat query/latest-dump.query)" https://databus.dbpedia.org/repo/sparql | tail -n+2 | sed 's/"//g')
+else
+  VERSION=$1
+fi
+
+download() {
+  DB_QUERY=$1
+  TARGET_DIR=$2
+  files=$(curl -H "Accept: text/csv" --data-urlencode "query=${DB_QUERY}" https://databus.dbpedia.org/repo/sparql | tail -n+2 | sed 's/"//g')
+  while IFS= read -r file ; do wget -P $TARGET_DIR $file; done <<< "$files"
+}
+
+dbpedia_original() {
+  echo "
+--------------------------------------------------------------------------------
+                          DBPEDIA KG (${VERSION})
+--------------------------------------------------------------------------------
+"
+  mkdir -p data/dump
+  mkdir -p data/ontology
+  if [ -f "data/ontology/ontology.nt" ]; then
+    echo "ontology for 'DBPedia original' already downloaded"
+  else
+    echo "download ontology for 'DBPedia original' ..."
+    ONT_QUERY=$(cat query/ontology.query | sed "s/DUMP_VERSION/${VERSION}/g")
+    download "$ONT_QUERY" data/ontology
+    mv "data/ontology/ontology--DEV_type=parsed.nt" "data/ontology/ontology.nt"
+  fi
+
+  if [ -f "query/data.lock" ]; then
+    echo "data for 'DBPedia original' already downloaded"
+  else
+    rm -rf data/dump/*.ttl.bz2*
+    echo "download data for 'DBPedia original' ..."
+    DAT_QUERY=$(cat query/data.query | sed "s/DUMP_VERSION/${VERSION}/g")
+    download "$DAT_QUERY" data/dump
+    for f in $(find -L data/dump -name "*.bz2")
+    do
+      echo "unpack ${f}"
+      bzip2 -d $f
+    done
+    touch query/data.lock
+  fi
+}
+
+dbpedia_original
