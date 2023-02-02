@@ -36,7 +36,7 @@ if [ ! -f "/data/init.lock" ]; then
         cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false })" --user "$USER" --password "$PASSWORD"
     done
     echo "label the nodes that are internal to DBPedia"
-    cypher-shell "MATCH (x:Resource) WHERE x.uri STARTS WITH 'http://dbpedia.org' SET x:DBI RETURN x" --user "$USER" --password "$PASSWORD"
+    cypher-shell "MATCH (x:Resource) WHERE x.uri STARTS WITH 'http://dbpedia.org' SET x:DBI RETURN null" --user "$USER" --password "$PASSWORD"
     echo "---- End DBPedia Original Init ----"
 
     touch "/data/init.lock"
