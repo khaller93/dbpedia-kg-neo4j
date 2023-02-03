@@ -13,7 +13,7 @@ BATCH_SIZE=10000
 
 cat > $QUERY_FILE << EOL
 MATCH (n)
-WITH count(n) AS totalNodes, ${BATCH_SIZE}
+WITH count(n) AS totalNodes
 
 WITH range(0, totalNodes, ${BATCH_SIZE}) AS batchStarts
 UNWIND batchStarts as batchStart
