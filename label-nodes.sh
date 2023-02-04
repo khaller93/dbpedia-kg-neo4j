@@ -12,16 +12,11 @@ QUERY_FILE=$(mktemp)
 BATCH_SIZE=100000
 
 cat > $QUERY_FILE << EOL
-MATCH (n:Resource)
-WITH count(n) AS totalNodes
-
-WITH range(0, totalNodes, ${BATCH_SIZE}) AS batchStarts
-UNWIND batchStarts as batchStart
-
-MATCH (x:Resource)
-WHERE id(x) >= batchStart AND id(x) < batchStart + ${BATCH_SIZE} AND x.uri STARTS WITH 'http://dbpedia.org'
-SET x:DBI
-RETURN count(x) AS nodesUpdated, batchStart, (batchStart + ${BATCH_SIZE}) AS batchEnd
+CALL apoc.periodic.iterate(
+  "MATCH (x:Resource) WHERE x.uri STARTS WITH 'http://dbpedia.org' RETURN x",
+  "SET x:DBI",
+  {batchSize:${BATCH_SIZE}, parallel:true}
+)
 EOL
 
 echo "> Labelling query was sent to Neo4J."
