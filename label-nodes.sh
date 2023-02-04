@@ -12,7 +12,7 @@ QUERY_FILE=$(mktemp)
 BATCH_SIZE=100000
 
 cat > $QUERY_FILE << EOL
-MATCH (n)
+MATCH (n:Resource)
 WITH count(n) AS totalNodes
 
 WITH range(0, totalNodes, ${BATCH_SIZE}) AS batchStarts
@@ -21,7 +21,7 @@ UNWIND batchStarts as batchStart
 MATCH (x:Resource)
 WHERE id(x) >= batchStart AND id(x) < batchStart + ${BATCH_SIZE} AND x.uri STARTS WITH 'http://dbpedia.org'
 SET x:DBI
-RETURN batchStart, (batchStart + ${BATCH_SIZE}) AS batchEnd
+RETURN count(x) AS nodesUpdated, batchStart, (batchStart + ${BATCH_SIZE}) AS batchEnd
 EOL
 
 echo "> Labelling query was sent to Neo4J."
