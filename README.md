@@ -23,11 +23,14 @@ downloaded, otherwise the specified dump date (e.g. 2022-03-01).
 ./get-dbpedia-dump [<dump-version>]
 ```
 
-All artifacts are downloaded except:
+All artifacts are downloaded from the latest-core collection, except for:
 * **freebase-links** from **transition** dataset
 * **links** from **transition** dataset
 * all artifacts from **yago** dataset
 * all artifacts from the **replaced-iris** dataset
+
+Additionally, the following artifacts are added to the collection:
+* **wikilinks** from **generic** dataset
 
 The exact SPARQL query for gathering can be found at [query/data.query](query/data.query).
 
