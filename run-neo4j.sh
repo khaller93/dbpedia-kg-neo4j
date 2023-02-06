@@ -24,7 +24,7 @@ if [ ! -f "/data/init.lock" ]; then
         sleep 5s
     done
 
-    echo "---- Initialize DBPedia Original ----"
+    echo "---- Initialize DBPedia KG ----"
     cypher-shell "CALL n10s.graphconfig.init($(cat /conf/graph-neo4j.conf))" --user "$USER" --password "$PASSWORD"
     cypher-shell "CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE" --user "$USER" --password "$PASSWORD"
     cd /ontology
@@ -36,8 +36,8 @@ if [ ! -f "/data/init.lock" ]; then
         cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false })" --user "$USER" --password "$PASSWORD"
     done
     echo "label the nodes that are internal to DBPedia"
-    label-nodes "$USER" "$PASSWORD"
-    echo "---- End DBPedia Original Init ----"
+    label-nodes dbi "$USER" "$PASSWORD"
+    echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"
     kill -9 $P
