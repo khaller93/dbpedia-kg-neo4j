@@ -24,6 +24,8 @@ downloaded, otherwise the specified dump date (e.g. 2022-03-01).
 ```
 
 All artifacts are downloaded from the latest-core collection, except for:
+* **homepages** from **generic** dataset
+* **article-template** from **generic** dataset
 * **freebase-links** from **transition** dataset
 * **links** from **transition** dataset
 * all artifacts from **yago** dataset
