@@ -35,8 +35,9 @@ if [ ! -f "/data/init.lock" ]; then
     for f in *.ttl; do
         cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false })" --user "$USER" --password "$PASSWORD"
     done
-    echo "label the nodes that are internal to DBPedia"
+    echo "label the nodes in DBPedia KG"
     label-nodes dbi "$USER" "$PASSWORD"
+    label-nodes db1m "$USER" "$PASSWORD"
     echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"
