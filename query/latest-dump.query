@@ -6,12 +6,12 @@ PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT ?version WHERE {
-	GRAPH ?g {
-		?dataset dcat:distribution ?distribution ;
-		         dataid:group <https://databus.dbpedia.org/dbpedia/generic> .
-    ?distribution dataid:file ?file ;
-		              dct:hasVersion ?version . 
-	}
+    GRAPH ?g {
+        ?dataset dcat:distribution ?distribution ;
+                 dataid:group <https://databus.dbpedia.org/dbpedia/generic> .
+        ?distribution dataid:file ?file ;
+                 dct:hasVersion ?version . 
+    }
 }
 ORDER BY DESC(?version)
 LIMIT 1
