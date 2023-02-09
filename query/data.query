@@ -29,8 +29,8 @@ SELECT DISTINCT ?file WHERE {
       FILTER(?artifact IN (<https://databus.dbpedia.org/dbpedia/generic/categories>, <https://databus.dbpedia.org/dbpedia/generic/commons-sameas-links>, <https://databus.dbpedia.org/dbpedia/generic/disambiguations>,
         <https://databus.dbpedia.org/dbpedia/generic/external-links>, <https://databus.dbpedia.org/dbpedia/generic/geo-coordinates>, <https://databus.dbpedia.org/dbpedia/generic/infobox-properties>,
         <https://databus.dbpedia.org/dbpedia/generic/infobox-property-definitions>, <https://databus.dbpedia.org/dbpedia/generic/interlanguage-links>, <https://databus.dbpedia.org/dbpedia/generic/labels>,
-        <https://databus.dbpedia.org/dbpedia/generic/page>, <https://databus.dbpedia.org/dbpedia/generic/persondata>, <https://databus.dbpedia.org/dbpedia/generic/redirects>, <https://databus.dbpedia.org/dbpedia/generic/revisions>,
-        <https://databus.dbpedia.org/dbpedia/generic/wikipedia-links>, <https://databus.dbpedia.org/dbpedia/generic/wikilinks>)) .
+        <https://databus.dbpedia.org/dbpedia/generic/images>, <https://databus.dbpedia.org/dbpedia/generic/page>, <https://databus.dbpedia.org/dbpedia/generic/persondata>, <https://databus.dbpedia.org/dbpedia/generic/redirects>,
+        <https://databus.dbpedia.org/dbpedia/generic/revisions>, <https://databus.dbpedia.org/dbpedia/generic/wikipedia-links>, <https://databus.dbpedia.org/dbpedia/generic/wikilinks>)) .
     }
   } UNION {
     SELECT ?file ?artifact WHERE {
