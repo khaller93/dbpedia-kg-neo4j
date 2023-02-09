@@ -20,6 +20,7 @@ services:
       - "./data/ontology:/ontology:ro"
       - "./scripts/run-neo4j.sh:/usr/bin/run-neo4j:ro"
       - "./scripts/label-nodes.sh:/usr/bin/label-nodes:ro"
+      - "./scripts/index-nodes.sh:/usr/bin/index-nodes:ro"
 
 volumes:
   db: { }
