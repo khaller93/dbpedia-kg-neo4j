@@ -29,11 +29,11 @@ if [ ! -f "/data/init.lock" ]; then
     cypher-shell "CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE" --user "$USER" --password "$PASSWORD"
     cd /ontology
     for f in *.nt; do
-        cypher-shell "CALL n10s.rdf.import.fetch('file:///ontology/${f}','N-Triples', { verifyUriSyntax: false })" --user "$USER" --password "$PASSWORD"
+        cypher-shell "CALL n10s.rdf.import.fetch('file:///ontology/${f}','N-Triples', { verifyUriSyntax: false, languageFilter: 'en' })" --user "$USER" --password "$PASSWORD"
     done
     cd /dump
     for f in *.ttl; do
-        cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false })" --user "$USER" --password "$PASSWORD"
+        cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false, languageFilter: 'en' })" --user "$USER" --password "$PASSWORD"
     done
     echo "label the nodes in DBPedia KG"
     label-nodes dbi "$USER" "$PASSWORD"
