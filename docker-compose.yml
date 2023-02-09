@@ -13,13 +13,13 @@ services:
       - "127.0.0.1:7687:7687"
       - "127.0.0.1:7474:7474"
     volumes:
-      - "db:/data"
-      - "neo4j-plugins:/var/lib/neo4j/plugins"
+      - "db:/data:rw"
+      - "neo4j-plugins:/var/lib/neo4j/plugins:rw"
       - "./config:/conf:ro"
       - "./data/dump:/dump:ro"
       - "./data/ontology:/ontology:ro"
-      - "./run-neo4j.sh:/usr/bin/run-neo4j:ro"
-      - "./label-nodes.sh:/usr/bin/label-nodes:ro"
+      - "./scripts/run-neo4j.sh:/usr/bin/run-neo4j:ro"
+      - "./scripts/label-nodes.sh:/usr/bin/label-nodes:ro"
 
 volumes:
   db: { }
