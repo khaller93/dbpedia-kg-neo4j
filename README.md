@@ -3,6 +3,8 @@
 This repository provides simple utilities to populate a Neo4J graph database
 instance with a certain version of the [DBpedia](https://www.dbpedia.org/) KG
 using the [neosemantics (n10s)](https://neo4j.com/labs/neosemantics/) plugin.
+Loading the complete DBpedia KG into Neo4J might take hours depending on your
+hardware, however.
 
 ```cypher
 MATCH (x:DBI) -[p]-> (y:DBI)
