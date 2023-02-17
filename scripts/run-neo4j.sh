@@ -45,7 +45,11 @@ if [ ! -f "/data/init.lock" ]; then
     echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"
+    chown neo4j:neo4j "/data/init.lock"
     kill -9 $P
+    while kill -0 $P; do 
+        sleep 5
+    done
 fi
 
 exec tini -g -- /startup/docker-entrypoint.sh $@
