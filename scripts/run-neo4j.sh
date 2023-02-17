@@ -47,9 +47,7 @@ if [ ! -f "/data/init.lock" ]; then
     touch "/data/init.lock"
     chown neo4j:neo4j "/data/init.lock"
     kill -9 $P
-    while kill -0 $P; do 
-        sleep 5
-    done
+    wait $P 2>/dev/null
 fi
 
 exec tini -g -- /startup/docker-entrypoint.sh $@
