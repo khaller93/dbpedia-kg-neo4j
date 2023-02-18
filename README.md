@@ -17,9 +17,14 @@ that have a URI/IRI starting with `http://dbpedia.org/` are labelled with `DBI`.
 
 ## Download Dump
 
-The DBpedia Core (latest core) collection is downloaded from the DBpedia databus
-with the following command. If no argument is specified, then the latest dump is
-downloaded, otherwise the specified dump date (e.g. 2022-03-01).
+The DBpedia Core (latest core) collection can be downloaded from the DBpedia
+databus with the following script. If no argument is specified, then the
+latest dump is downloaded, otherwise the specified dump date (e.g. 2022-03-01).
+
+The **requirements** for the script are:
+* bzip2
+* gzip
+* wget & curl
 
 ```bash
 ./get-dbpedia-dump [<dump-version>]
