@@ -40,6 +40,7 @@ All artifacts are downloaded from the latest-core collection, except for:
 
 Additionally, the following artifacts are added to the collection:
 * **wikilinks** from **generic** dataset
+* **images** from **generic** dataset
 
 The exact SPARQL query for gathering can be found at [query/data.query](query/data.query).
 
