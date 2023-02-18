@@ -11,11 +11,12 @@ SELECT DISTINCT ?file WHERE {
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
 
-      ?distribution dataid:compression 'bzip2'^^<http://www.w3.org/2001/XMLSchema#string> ;
-                    dataid:formatExtension 'ttl'^^<http://www.w3.org/2001/XMLSchema#string> ;
+      ?distribution dataid:formatExtension ?format ;
                     dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
                     dct:hasVersion ?version ;
                     dataid:file ?file .
+      
+      OPTIONAL { ?distribution dataid:compression ?compression }
       
       FILTER NOT EXISTS {
         ?otherDataset dataid:group <https://databus.dbpedia.org/dbpedia/generic> ;
@@ -25,6 +26,8 @@ SELECT DISTINCT ?file WHERE {
         FILTER(str(?otherVersion) <= "DUMP_VERSION") .
         FILTER(str(?otherVersion) > str(?version)) .
       }
+      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
+      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
       FILTER(?artifact IN (<https://databus.dbpedia.org/dbpedia/generic/categories>, <https://databus.dbpedia.org/dbpedia/generic/commons-sameas-links>, <https://databus.dbpedia.org/dbpedia/generic/disambiguations>,
         <https://databus.dbpedia.org/dbpedia/generic/external-links>, <https://databus.dbpedia.org/dbpedia/generic/geo-coordinates>, <https://databus.dbpedia.org/dbpedia/generic/infobox-properties>,
@@ -38,11 +41,12 @@ SELECT DISTINCT ?file WHERE {
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
 
-        ?distribution dataid:compression 'bzip2'^^<http://www.w3.org/2001/XMLSchema#string> ;
-                    dataid:formatExtension 'ttl'^^<http://www.w3.org/2001/XMLSchema#string> ;
+        ?distribution dataid:formatExtension ?format ;
                     dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
                     dct:hasVersion ?version ;
                     dataid:file ?file .
+      
+      OPTIONAL { ?distribution dataid:compression ?compression }
       
       FILTER NOT EXISTS {
         ?otherDataset dataid:group <https://databus.dbpedia.org/dbpedia/mappings> ;
@@ -53,6 +57,8 @@ SELECT DISTINCT ?file WHERE {
         FILTER(str(?otherVersion) > str(?version)) .
       }
       FILTER(?artifact != <https://databus.dbpedia.org/dbpedia/mappings/mappingbased-objects-uncleaned>) .
+      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
+      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION  {
@@ -61,10 +67,13 @@ SELECT DISTINCT ?file WHERE {
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
       
-      ?distribution dbcv:type ?c0 ;
+      ?distribution dataid:formatExtension ?format ;
+                    dbcv:type ?c0 ;
                     dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
                     dct:hasVersion ?version ;
                     dcat:downloadURL ?file .
+      
+      OPTIONAL { ?distribution dataid:compression ?compression }
       
       VALUES ?c0 {
         'extension'^^<http://www.w3.org/2001/XMLSchema#string>
@@ -78,6 +87,8 @@ SELECT DISTINCT ?file WHERE {
         FILTER(str(?otherVersion) <= "DUMP_VERSION") .
         FILTER(str(?otherVersion) > str(?version)) .
       }
+      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
+      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION {
@@ -86,9 +97,12 @@ SELECT DISTINCT ?file WHERE {
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
       
-      ?distribution dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
+      ?distribution dataid:formatExtension ?format ;
+                    dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
                     dct:hasVersion ?version ;
                     dataid:file ?file .
+      
+      OPTIONAL { ?distribution dataid:compression ?compression }
     
         FILTER NOT EXISTS {
         ?otherDataset dataid:group <https://databus.dbpedia.org/vehnem/text> ;
@@ -98,6 +112,8 @@ SELECT DISTINCT ?file WHERE {
         FILTER(str(?otherVersion) <= "DUMP_VERSION") .
         FILTER(str(?otherVersion) > str(?version)) .
       }
+      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
+      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION {
@@ -106,9 +122,12 @@ SELECT DISTINCT ?file WHERE {
               dataid:artifact <https://databus.dbpedia.org/dbpedia/transition/sdtypes> ;
               dcat:distribution ?distribution .
       
-      ?distribution dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
+      ?distribution dataid:formatExtension ?format ;
+                    dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
                     dct:hasVersion ?version ;
                     dataid:file ?file .
+
+        OPTIONAL { ?distribution dataid:compression ?compression }
     
         FILTER NOT EXISTS {
         ?otherDataset dataid:group <https://databus.dbpedia.org/dbpedia/transition> ;
@@ -118,6 +137,8 @@ SELECT DISTINCT ?file WHERE {
         FILTER(str(?otherVersion) <= "DUMP_VERSION") .
         FILTER(str(?otherVersion) > str(?version)) .
       }
+      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
+      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   }
