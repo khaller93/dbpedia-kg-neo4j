@@ -24,4 +24,4 @@ services:
 
 volumes:
   db: { }
-  neo4j-plugins: {}
+  neo4j-plugins: { }
