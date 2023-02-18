@@ -35,13 +35,14 @@ if [ ! -f "/data/init.lock" ]; then
     for f in *.ttl; do
         cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false, languageFilter: 'en' })" --user "$USER" --password "$PASSWORD"
     done
+    for f in *.nt; do
+        cypher-shell "CALL n10s.rdf.import.fetch('file:///dump/${f}','Turtle', { verifyUriSyntax: false, languageFilter: 'en' })" --user "$USER" --password "$PASSWORD"
+    done
     echo "label the nodes in DBPedia KG"
     label-nodes dbi "$USER" "$PASSWORD"
-    label-nodes db1m "$USER" "$PASSWORD"
     echo "Index the nodes in DBPedia KG"
     index-nodes "Resource" "$USER" "$PASSWORD"
     index-nodes "DBI" "$USER" "$PASSWORD"
-    index-nodes "DB1M" "$USER" "$PASSWORD"
     echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"
