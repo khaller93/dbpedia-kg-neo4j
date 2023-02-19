@@ -15,11 +15,13 @@ RETURN x, p, y
 All nodes are labelled with `Resource` by neosemantics. Additionally, all nodes
 that have a URI/IRI starting with `http://dbpedia.org/` are labelled with `DBI`.
 
-## Download Dump
+## Sampling Methodology
+
+### 1. Download Dump (2022.09.01)
 
 The DBpedia Core (latest core) collection can be downloaded from the DBpedia
 databus with the following script. If no argument is specified, then the
-latest dump is downloaded, otherwise the specified dump date (e.g. 2022-03-01).
+latest dump is downloaded, otherwise the specified dump date (e.g. 2022.09.01).
 
 The **requirements** for the script are:
 * bzip2
@@ -27,7 +29,7 @@ The **requirements** for the script are:
 * wget & curl
 
 ```bash
-./get-dbpedia-dump [<dump-version>]
+./get-dbpedia-dump 2022.09.01
 ```
 
 All artifacts are downloaded from the latest-core collection, except for:
@@ -44,7 +46,17 @@ Additionally, the following artifacts are added to the collection:
 
 The exact SPARQL query for gathering can be found at [query/data.query](query/data.query).
 
+### 2. tbd
+
+tbd
+
 ## Running
+
+Firstly, the script `get-dbpedia-dump` has to be executed as described above.
+When the dump has been successfully downloaded, then the following command can
+be used to start the import of DBpedia KG into Neo4J. This startup process can
+take up to hours or days depending on your hardware. After the import, a Neo4J
+instance is quickly started.
 
 ```bash
 docker-compose up
