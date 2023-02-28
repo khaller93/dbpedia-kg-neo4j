@@ -40,9 +40,13 @@ if [ ! -f "/data/init.lock" ]; then
     done
     echo "label the nodes in DBPedia KG"
     label-nodes dbi "$USER" "$PASSWORD"
+    label-nodes db1m "$USER" "$PASSWORD"
+    label-nodes db250k "$USER" "$PASSWORD"
     echo "Index the nodes in DBPedia KG"
     index-nodes "Resource" "$USER" "$PASSWORD"
     index-nodes "DBI" "$USER" "$PASSWORD"
+    index-nodes "DB1M" "$USER" "$PASSWORD"
+    index-nodes "DB250k" "$USER" "$PASSWORD"
     echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"
