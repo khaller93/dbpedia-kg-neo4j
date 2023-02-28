@@ -6,7 +6,7 @@ PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT ?file WHERE {
   {
-    SELECT DISTINCT ?file WHERE {
+    SELECT ?file WHERE {
       ?dataset dataid:group <https://databus.dbpedia.org/dbpedia/generic> ;
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
@@ -33,11 +33,10 @@ SELECT DISTINCT ?file WHERE {
         <https://databus.dbpedia.org/dbpedia/generic/external-links>, <https://databus.dbpedia.org/dbpedia/generic/geo-coordinates>, <https://databus.dbpedia.org/dbpedia/generic/infobox-properties>,
         <https://databus.dbpedia.org/dbpedia/generic/infobox-property-definitions>, <https://databus.dbpedia.org/dbpedia/generic/interlanguage-links>, <https://databus.dbpedia.org/dbpedia/generic/labels>,
         <https://databus.dbpedia.org/dbpedia/generic/images>, <https://databus.dbpedia.org/dbpedia/generic/page>, <https://databus.dbpedia.org/dbpedia/generic/persondata>, <https://databus.dbpedia.org/dbpedia/generic/redirects>,
-        <https://databus.dbpedia.org/dbpedia/generic/revisions>, <https://databus.dbpedia.org/dbpedia/generic/wikipedia-links>, <https://databus.dbpedia.org/dbpedia/generic/wikilinks>,
-        <https://databus.dbpedia.org/dbpedia/generic/homepages>, <https://databus.dbpedia.org/dbpedia/generic/article-templates>)) .
+        <https://databus.dbpedia.org/dbpedia/generic/revisions>, <https://databus.dbpedia.org/dbpedia/generic/wikipedia-links>, <https://databus.dbpedia.org/dbpedia/generic/wikilinks>)) .
     }
   } UNION {
-    SELECT DISTINCT ?file ?artifact WHERE {
+    SELECT ?file ?artifact WHERE {
       ?dataset dataid:group <https://databus.dbpedia.org/dbpedia/mappings> ;
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
@@ -63,7 +62,7 @@ SELECT DISTINCT ?file WHERE {
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION  {
-    SELECT DISTINCT ?file WHERE {
+    SELECT ?file WHERE {
       ?dataset dataid:group <https://databus.dbpedia.org/propan/lhd> ;
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
@@ -93,7 +92,7 @@ SELECT DISTINCT ?file WHERE {
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION {
-    SELECT DISTINCT ?file WHERE {
+    SELECT ?file WHERE {
       ?dataset dataid:group <https://databus.dbpedia.org/vehnem/text> ;
               dataid:artifact ?artifact ;
               dcat:distribution ?distribution .
@@ -118,9 +117,9 @@ SELECT DISTINCT ?file WHERE {
       FILTER(str(?version) <= "DUMP_VERSION") .
     }
   } UNION {
-    SELECT DISTINCT ?file WHERE {
+    SELECT ?file WHERE {
       ?dataset dataid:group <https://databus.dbpedia.org/dbpedia/transition> ;
-              dataid:artifact ?artifact ;
+              dataid:artifact <https://databus.dbpedia.org/dbpedia/transition/sdtypes> ;
               dcat:distribution ?distribution .
       
       ?distribution dataid:formatExtension ?format ;
@@ -132,67 +131,12 @@ SELECT DISTINCT ?file WHERE {
     
         FILTER NOT EXISTS {
         ?otherDataset dataid:group <https://databus.dbpedia.org/dbpedia/transition> ;
-                      dataid:artifact ?artifact ;
+                      dataid:artifact <https://databus.dbpedia.org/dbpedia/transition/sdtypes> ;
                       dcat:distribution ?otherDistribution .
         ?otherDistribution dct:hasVersion ?otherVersion .
         FILTER(str(?otherVersion) <= "DUMP_VERSION") .
         FILTER(str(?otherVersion) > str(?version)) .
       }
-      FILTER(?artifact IN (<https://databus.dbpedia.org/dbpedia/transition/sdtypes>,
-        <https://databus.dbpedia.org/dbpedia/transition/freebase-links>)) .
-      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
-      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
-      FILTER(str(?version) <= "DUMP_VERSION") .
-    }
-  } UNION {
-    SELECT DISTINCT ?file WHERE {
-      ?dataset dataid:group <https://databus.dbpedia.org/vehnem/yago> ;
-              dataid:artifact ?artifact ;
-              dcat:distribution ?distribution .
-      
-      ?distribution dataid:formatExtension ?format ;
-                    dbcv:lang 'en'^^<http://www.w3.org/2001/XMLSchema#string> ;
-                    dct:hasVersion ?version ;
-                    dataid:file ?file .
-
-        OPTIONAL { ?distribution dataid:compression ?compression }
-    
-        FILTER NOT EXISTS {
-        ?otherDataset dataid:group <https://databus.dbpedia.org/dbpedia/transition> ;
-                      dataid:artifact ?artifact ;
-                      dcat:distribution ?otherDistribution .
-        ?otherDistribution dct:hasVersion ?otherVersion .
-        FILTER(str(?otherVersion) <= "DUMP_VERSION") .
-        FILTER(str(?otherVersion) > str(?version)) .
-      }
-      FILTER(?artifact IN (<https://databus.dbpedia.org/vehnem/yago/taxonomy>,
-        <https://databus.dbpedia.org/vehnem/yago/instance-types>)) .
-      FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
-      FILTER(str(?format) = "ttl" || str(?format) = "nt") .
-      FILTER(str(?version) <= "DUMP_VERSION") .
-    }
-  } UNION {
-    SELECT DISTINCT ?file WHERE {
-      ?dataset dataid:group <https://databus.dbpedia.org/vehnem/yago> ;
-              dataid:artifact ?artifact ;
-              dcat:distribution ?distribution .
-      
-      ?distribution dataid:formatExtension ?format ;
-                    dct:hasVersion ?version ;
-                    dataid:file ?file .
-
-        OPTIONAL { ?distribution dataid:compression ?compression }
-    
-        FILTER NOT EXISTS {
-        ?otherDataset dataid:group <https://databus.dbpedia.org/vehnem/yago> ;
-                      dataid:artifact ?artifact ;
-                      dcat:distribution ?otherDistribution .
-        ?otherDistribution dct:hasVersion ?otherVersion .
-        FILTER(str(?otherVersion) <= "DUMP_VERSION") .
-        FILTER(str(?otherVersion) > str(?version)) .
-      }
-      FILTER(?artifact IN (<https://databus.dbpedia.org/vehnem/yago/taxonomy>,
-        <https://databus.dbpedia.org/vehnem/yago/instance-types>)) .
       FILTER(!bound(?compression) || str(?compression) = "bzip2" || str(?compression) = "gz") .
       FILTER(str(?format) = "ttl" || str(?format) = "nt") .
       FILTER(str(?version) <= "DUMP_VERSION") .
