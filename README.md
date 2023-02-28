@@ -15,6 +15,18 @@ RETURN x, p, y
 All nodes are labelled with `Resource` by neosemantics. Additionally, all nodes
 that have a URI/IRI starting with `http://dbpedia.org/` are labelled with `DBI`.
 
+## Running
+
+Firstly, the script `get-dbpedia-dump` has to be executed as described below.
+When the dump has been successfully downloaded, then the following command can
+be used to start the import of DBpedia KG into Neo4J. This startup process can
+take up to hours or days depending on your hardware. After the import, a Neo4J
+instance is quickly started.
+
+```bash
+docker-compose up
+```
+
 ## Sampling Methodology
 
 ### 1. Download Dump (2022.09.01)
@@ -72,7 +84,10 @@ In this KG, 66.20% of the relationsips are of type
 
 ### 3. Label DBpedia1M nodes (with `DB1M`)
 
-The **DBpedia1M** subsampling of DBpedia follows the methodology of **DBpedia100k**, but it increases the number of backlinks required by a resource to 40 (instead of 20). The final dataset then contains all triples that are between resources that fulfill this requirement.
+The **DBpedia1M** subsampling of DBpedia follows the methodology of 
+**DBpedia100k**, but it increases the number of backlinks required by a resource
+to 40 (instead of 20). The final dataset then contains all triples that are
+between resources that fulfill this requirement.
 
 ```cypher
 MATCH (y:DBI) -[p]-> (x:DBI)
@@ -81,7 +96,8 @@ WHERE rels >= 40
 RETURN x
 ```
 
-All resources with zero ingoing and outgoing relationships are removed from this sampling.
+All resources with zero ingoing and outgoing relationships are removed from
+this sampling.
 
 ```cypher
 MATCH (x:DB1M)
@@ -134,18 +150,6 @@ In this KG, 83.42% of the relationsips are of type
 ### 5. tbd
 
 tbd
-
-## Running
-
-Firstly, the script `get-dbpedia-dump` has to be executed as described above.
-When the dump has been successfully downloaded, then the following command can
-be used to start the import of DBpedia KG into Neo4J. This startup process can
-take up to hours or days depending on your hardware. After the import, a Neo4J
-instance is quickly started.
-
-```bash
-docker-compose up
-```
 
 ## Contact
 
