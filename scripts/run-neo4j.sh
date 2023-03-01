@@ -5,7 +5,7 @@ cp /conf/neo4j.conf /var/lib/neo4j.conf
 
 if [ ! -f "/data/init.lock" ]; then
 
-    NEO4JLABS_PLUGINS="[\"apoc\", \"n10s\"]" NEO4J_AUTH="$INIT_AUTH" /startup/docker-entrypoint.sh neo4j &
+    NEO4JLABS_PLUGINS="[\"apoc\", \"n10s\", \"graph-data-science\"]" NEO4J_AUTH="$INIT_AUTH" /startup/docker-entrypoint.sh neo4j &
     P="$!"
 
     ASK_QUERY="MATCH (n) RETURN n LIMIT 1"
