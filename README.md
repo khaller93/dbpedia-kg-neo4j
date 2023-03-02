@@ -45,6 +45,11 @@ The **requirements** for the script are:
 ```
 
 All artifacts are downloaded from the latest-core collection, except for:
+* **homepages** from **generic** dataset
+* **article-template** from **generic** dataset
+* **freebase-links** from **transition** dataset
+* **links** from **transition** dataset
+* all artifacts from **yago** dataset
 * all artifacts from the **replaced-iris** dataset
 
 Additionally to the latest core collection, the following artifacts are added to
