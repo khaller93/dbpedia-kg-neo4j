@@ -24,6 +24,28 @@ CALL apoc.periodic.iterate(
 EOL
 }
 
+db25k_labelling() {
+  cat > $1 << EOL
+CALL {
+  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_0.csv' AS row
+  WITH row[0] as nodeID
+  RETURN nodeID
+  UNION 
+  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_1.csv' AS row
+  WITH row[0] as nodeID
+  RETURN nodeID
+  UNION 
+  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_2.csv' AS row
+  WITH row[0] as nodeID
+  RETURN nodeID
+}
+MATCH (x:DB1M)
+WHERE id(x) = toInteger(nodeID)
+SET x:DB25k
+RETURN nodeID
+EOL
+}
+
 rm_0nodes() {
   cat > $1 << EOL
 CALL apoc.periodic.iterate(
@@ -55,6 +77,9 @@ elif [ "$METHOD" = "db250k" ]; then
   dbx_labelling $QUERY_FILE "DB1M" "DB250k"
   cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
   rm_0nodes $QUERY_FILE "DB250k"
+  cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
+elif [ "$METHOD" = "db25k" ]; then
+  db25k_labelling $QUERY_FILE
   cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
 else
   echo "unknown method '$METHOD' specified."

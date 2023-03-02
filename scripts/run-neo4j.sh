@@ -3,6 +3,8 @@ set -x
 
 cp /conf/neo4j.conf /var/lib/neo4j.conf
 
+chown neo4j:neo4j -R /sampling
+
 if [ ! -f "/data/init.lock" ]; then
 
     NEO4JLABS_PLUGINS="[\"apoc\", \"n10s\", \"graph-data-science\"]" NEO4J_AUTH="$INIT_AUTH" /startup/docker-entrypoint.sh neo4j &
@@ -42,11 +44,13 @@ if [ ! -f "/data/init.lock" ]; then
     label-nodes dbi "$USER" "$PASSWORD"
     label-nodes db1m "$USER" "$PASSWORD"
     label-nodes db250k "$USER" "$PASSWORD"
+    label-nodes db25k "$USER" "$PASSWORD"
     echo "Index the nodes in DBPedia KG"
     index-nodes "Resource" "$USER" "$PASSWORD"
     index-nodes "DBI" "$USER" "$PASSWORD"
     index-nodes "DB1M" "$USER" "$PASSWORD"
     index-nodes "DB250k" "$USER" "$PASSWORD"
+    index-nodes "DB25k" "$USER" "$PASSWORD"
     echo "---- End DBPedia KG Init ----"
 
     touch "/data/init.lock"

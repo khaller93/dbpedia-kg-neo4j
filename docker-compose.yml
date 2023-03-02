@@ -8,7 +8,6 @@ services:
     command: ["neo4j"]
     environment:
       - INIT_AUTH=neo4j/test
-      - NEO4J_dbms.unmanaged_extension_classes=n10s.endpoint=/rdf
     ports:
       - "127.0.0.1:7687:7687"
       - "127.0.0.1:7474:7474"
@@ -18,6 +17,7 @@ services:
       - "./config:/conf:ro"
       - "./data/dump:/dump:ro"
       - "./data/ontology:/ontology:ro"
+      - "./sampling:/sampling:rw"
       - "./scripts/run-neo4j.sh:/usr/bin/run-neo4j:ro"
       - "./scripts/label-nodes.sh:/usr/bin/label-nodes:ro"
       - "./scripts/index-nodes.sh:/usr/bin/index-nodes:ro"
