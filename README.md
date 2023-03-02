@@ -143,9 +143,46 @@ RETURN x
 In this KG, 83.42% of the relationsips are of type
 `http://dbpedia.org/ontology/wikiPageWikiLink`.
 
-### 5. tbd
+### 5. Label DBpedia25k nodes (with `DB25k`)
 
-tbd
+The **DBpedia25k** dataset is created by doing a random walk subsampling of 
+**DBpedia1M** using a number of seed resources (118) and a sampling ration of
+0.025. These seed resources are entities linked to DBpedia from the Atlasify240
+gold standard for semantic relatedness.
+
+
+The subsampling was performed like this:
+```cypher
+LOAD CSV WITH HEADERS FROM 'file:///sampling/seed_resources.csv' AS row
+WITH row.resource as uri
+
+MATCH (x:DB1M)
+WHERE x.uri = uri
+WITH collect(id(x)) as seed
+
+CALL gds.graph.project("G1M", "DB1M", "*") YIELD graphName
+
+CALL gds.alpha.graph.sample.rwr("Samp", graphName, {
+    samplingRatio: 0.025,
+    startNodes: seed
+})
+YIELD graphName as subgraphName, nodeCount, relationshipCount
+
+RETURN subgraphName, nodeCount, relationshipCount
+```
+
+```
+CALL gds.beta.graph.export.csv("Samp", {exportName: "dbpedia25k"})
+```
+
+#### Statistics
+
+| **#Entities** | **#Relationships** | **#Statements** | **Density**            |
+| ------------- | ------------------ | --------------- | ---------------------- |
+| 23,513        | 1,610              | 771,199         | 1,39 * 10^3            |
+
+
+In this KG, 85.72% of the relationsips are of type `http://dbpedia.org/ontology/wikiPageWikiLink`.
 
 ## Contact
 
