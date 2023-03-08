@@ -24,25 +24,33 @@ CALL apoc.periodic.iterate(
 EOL
 }
 
-db25k_labelling() {
+dba240_labelling() {
   cat > $1 << EOL
 CALL {
-  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_0.csv' AS row
-  WITH row[0] as nodeID
-  RETURN nodeID
-  UNION 
-  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_1.csv' AS row
-  WITH row[0] as nodeID
-  RETURN nodeID
-  UNION 
-  LOAD CSV FROM 'file:///sampling/dbpedia25k/nodes_DB1M_2.csv' AS row
-  WITH row[0] as nodeID
-  RETURN nodeID
+  LOAD CSV FROM 'file:///sampling/dba240/nodes.tsv' AS row
+  FIELDTERMINATOR '\t'
+  WITH row[0] as uri
+  RETURN uri
 }
-MATCH (x:DB1M)
-WHERE id(x) = toInteger(nodeID)
-SET x:DB25k
-RETURN nodeID
+MATCH (x:DBI)
+WHERE x.uri = uri
+SET x:DBA240
+RETURN uri
+EOL
+}
+
+a240_seed_labelling() {
+  cat > $1 << EOL
+CALL {
+  LOAD CSV FROM 'file:///sampling/seed_resources.tsv' AS row
+  FIELDTERMINATOR '\t'
+  WITH row[0] as uri
+  RETURN uri
+}
+MATCH (x:DBI)
+WHERE x.uri = uri
+SET x:A240Seed
+RETURN uri
 EOL
 }
 
@@ -78,8 +86,11 @@ elif [ "$METHOD" = "db250k" ]; then
   cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
   rm_0nodes $QUERY_FILE "DB250k"
   cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
-elif [ "$METHOD" = "db25k" ]; then
-  db25k_labelling $QUERY_FILE
+elif [ "$METHOD" = "dba240" ]; then
+  dba240_labelling $QUERY_FILE
+  cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
+elif [ "$METHOD" = "a240seed" ]; then
+  a240_seed_labelling $QUERY_FILE
   cypher-shell --file $QUERY_FILE --user "$USER" --password "$PASSWORD"
 else
   echo "unknown method '$METHOD' specified."
