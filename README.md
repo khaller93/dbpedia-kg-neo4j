@@ -80,8 +80,7 @@ RETURN x
 | ------------- | ------------------ | --------------- | ---------------------- |
 | 35,159,871    | 13032              | 383,739,569     |  3,1 * 10<sup>-7</sup> |
 
-In this KG, 66.20% of the relationsips are of type
-`http://dbpedia.org/ontology/wikiPageWikiLink`.
+In this KG, 66.20% of the relationsips are of type `dbo:wikiPageWikiLink`.
 
 ### 3. Label DBpedia1M nodes (with `DB1M`)
 
@@ -114,7 +113,7 @@ RETURN x
 | 940,535       | 7901               | 60,148,675      | 6,7 * 10<sup>-5</sup>  |
 
 
-In this KG, 77.80% of the relationsips are of type `http://dbpedia.org/ontology/wikiPageWikiLink`.
+In this KG, 77.80% of the relationsips are of type `dbo:wikiPageWikiLink`.
 
 ### 4. Label DBpedia250k nodes (with `DB250k`)
 
@@ -145,49 +144,41 @@ RETURN x
 | ------------- | ------------------ | --------------- | ---------------------- |
 | 249,807       | 5506               | 21,089,884      | 3,38 * 10<sup>-4</sup> |
 
-In this KG, 83.42% of the relationsips are of type
-`http://dbpedia.org/ontology/wikiPageWikiLink`.
+In this KG, 83.42% of the relationsips are of type `dbo:wikiPageWikiLink`.
 
-### 5. Label DBpedia25k nodes (with `DB25k`)
+### 5. Label DBA240 nodes (with `DBA240`)
 
-The **DBpedia25k** dataset is created by doing a random walk subsampling of 
-**DBpedia1M** using a number of seed resources (118) and a sampling ration of
-0.025. These seed resources are entities linked to DBpedia from the Atlasify240
-gold standard for semantic relatedness.
+The **DBA240** dataset aims to be a small subset of **DBpedia35M** for
+hyper-parameter optimizations. We applied a modified version of the forest fire
+sampling model, where the forest fire doesn’t start from a random point in the
+graph, but from the 118 entities of the Atlasify240 dataset. We computed two
+burning steps with a forward propagation of `0.00317`, and a backward ratio of 
+`0.78`. Additionally, we introduced an increased weight of `3.67` for
+`dbo:wikiPageWikiLink` relationships to sample a representative share of these
+statements. ALl selected nodes are listed in the `sampling/dba240/nodes.tsv`
+file.
 
-
-The subsampling was performed like this:
 ```cypher
-LOAD CSV WITH HEADERS FROM 'file:///sampling/seed_resources.csv' AS row
-WITH row.resource as uri
-
-MATCH (x:DB1M)
+CALL {
+  LOAD CSV FROM 'file:///sampling/dba240/nodes.tsv' AS row
+  FIELDTERMINATOR '\t'
+  WITH row[0] as uri
+  RETURN uri
+}
+MATCH (x:DBI)
 WHERE x.uri = uri
-WITH collect(id(x)) as seed
-
-CALL gds.graph.project("G1M", "DB1M", "*") YIELD graphName
-
-CALL gds.alpha.graph.sample.rwr("Samp", graphName, {
-    samplingRatio: 0.025,
-    startNodes: seed
-})
-YIELD graphName as subgraphName, nodeCount, relationshipCount
-
-RETURN subgraphName, nodeCount, relationshipCount
-```
-
-```
-CALL gds.beta.graph.export.csv("Samp", {exportName: "dbpedia25k"})
+SET x:DBA240
+RETURN uri
 ```
 
 #### Statistics
 
 | **#Entities** | **#Relationships** | **#Statements** | **Density**            |
 | ------------- | ------------------ | --------------- | ---------------------- |
-| 23,513        | 1,610              | 771,199         | 1,39 * 10^3            |
+| 19,397        | 816                | 92,133          | $2.45 * 10^{-4}$       |
 
 
-In this KG, 85.72% of the relationsips are of type `http://dbpedia.org/ontology/wikiPageWikiLink`.
+In this KG, 72.45% of the relationsips are of type `dbo:wikiPageWikiLink`.
 
 ## Contact
 
