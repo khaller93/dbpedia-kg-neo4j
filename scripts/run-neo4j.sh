@@ -2,6 +2,7 @@
 set -x
 
 cp /conf/neo4j.conf /var/lib/neo4j.conf
+cp /conf/apoc.conf /var/lib/apoc.conf
 
 chown neo4j:neo4j -R /sampling
 
